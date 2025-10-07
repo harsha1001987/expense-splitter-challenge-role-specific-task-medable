@@ -1,0 +1,613 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+}
+
+.app-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-header h1 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.app-main {
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /* BUG: This breaks on mobile - no wrap, fixed widths */
+  display: flex;
+  gap: 2rem;
+}
+
+.left-column,
+.right-column {
+  /* BUG: Fixed width that breaks on mobile */
+  width: 50%;
+  min-width: 500px;
+}
+
+/* Card Component */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+  color: #4a5568;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.card h3 {
+  color: #718096;
+  margin: 1rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  /* BUG: No responsive behavior for form rows */
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  /* BUG: Text overflow not handled */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.input.select {
+  cursor: pointer;
+}
+
+.input-small {
+  width: 100px;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: #f56565;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #e53e3e;
+}
+
+.btn-delete {
+  background: transparent;
+  color: #e53e3e;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+}
+
+.btn-delete:hover {
+  background: #fed7d7;
+  border-color: #fc8181;
+}
+
+.btn-delete.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-icon {
+  background: transparent;
+  color: #718096;
+  padding: 0.25rem 0.5rem;
+}
+
+.btn-icon:hover {
+  background: #f7fafc;
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* People Manager Styles */
+.add-person-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.add-person-form input {
+  flex: 1;
+}
+
+.people-list {
+  margin-top: 1rem;
+}
+
+.people-items {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.person-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  background: #f7fafc;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.person-item:hover {
+  background: #edf2f7;
+}
+
+.person-name {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+/* Expense Form Styles */
+.radio-group,
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-label,
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.radio-label:hover,
+.checkbox-label:hover {
+  background: #f7fafc;
+}
+
+.radio-label input,
+.checkbox-label input {
+  cursor: pointer;
+}
+
+.split-person {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #f7fafc;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.split-amount {
+  color: #48bb78;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+.split-preview {
+  background: #e6fffa;
+  border: 1px solid #81e6d9;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin: 1rem 0;
+}
+
+.split-preview p {
+  color: #234e52;
+  margin: 0;
+}
+
+/* Balance View Styles */
+.balance-card {
+  /* BUG: z-index conflict with modal/dropdown */
+  z-index: 999;
+  position: relative;
+}
+
+.total-spent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.total-spent .amount {
+  font-size: 1.5rem;
+}
+
+.balances-grid {
+  margin-bottom: 1.5rem;
+}
+
+.balance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.balance-positive {
+  background: #d4f4dd;
+  border: 1px solid #84d4a0;
+}
+
+.balance-negative {
+  background: #ffd4d4;
+  border: 1px solid #ff8484;
+}
+
+.balance-neutral {
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+}
+
+.balance-item:hover {
+  transform: translateX(4px);
+}
+
+.balance-amount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.balance-amount .label {
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.balance-amount .amount {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.balance-amount .positive {
+  color: #22543d;
+}
+
+.balance-amount .negative {
+  color: #742a2a;
+}
+
+.balance-amount .neutral {
+  color: #718096;
+}
+
+/* Debt Simplification Styles */
+.simplified-debts {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.simplified-debts .subtitle {
+  color: #718096;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.debt-list {
+  list-style: none;
+}
+
+.debt-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.debt-from {
+  font-weight: 500;
+  color: #e53e3e;
+}
+
+.debt-arrow {
+  color: #cbd5e0;
+}
+
+.debt-to {
+  font-weight: 500;
+  color: #38a169;
+}
+
+.debt-amount {
+  margin-left: auto;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.all-settled {
+  text-align: center;
+  padding: 2rem;
+  background: #d4f4dd;
+  border-radius: 8px;
+  color: #22543d;
+  font-weight: 500;
+}
+
+/* Expense List Styles */
+.expense-item {
+  background: #f7fafc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  /* BUG: Overflow issues with long expense descriptions */
+  overflow: hidden;
+}
+
+.expense-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.expense-header:hover {
+  background: #edf2f7;
+}
+
+.expense-info {
+  flex: 1;
+}
+
+.expense-description {
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  /* BUG: Text overflow for long descriptions */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expense-meta {
+  display: flex;
+  gap: 1rem;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.expense-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.expense-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.expense-details {
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.split-details {
+  margin-bottom: 1rem;
+}
+
+.split-list {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.split-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #f7fafc;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.split-person {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.split-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.owes-label,
+.paid-label {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+.split-amount.negative {
+  color: #e53e3e;
+  font-weight: 600;
+}
+
+.split-amount.positive {
+  color: #38a169;
+  font-weight: 600;
+}
+
+.gets-back {
+  color: #718096;
+  font-size: 0.85rem;
+  margin-left: 0.25rem;
+}
+
+.expense-actions-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.expense-summary {
+  text-align: center;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  color: #4a5568;
+}
+
+/* Utility Classes */
+.empty-state {
+  text-align: center;
+  color: #a0aec0;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.warning {
+  background: #fed7d7;
+  color: #742a2a;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* TODO: Add responsive breakpoints */
+/* TODO: Add hover states for remaining interactive elements */
+/* TODO: Fix form input overflow issues */
+/* TODO: Add loading states */
+/* TODO: Add animations for state changes */
+
+/* Minimal responsive attempt - but incomplete */
+@media (max-width: 768px) {
+  /* BUG: Container still breaks because of fixed widths and no flex-wrap */
+  .container {
+    /* Should have flex-direction: column or flex-wrap: wrap */
+    /* But currently missing, causing horizontal scroll */
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .btn,
+  .add-person-form,
+  .expense-form {
+    display: none;
+  }
+}
