@@ -18,11 +18,13 @@ function App() {
               <PeopleManager />
               <ExpenseForm />
             </div>
+<div className="flex justify-center">
+  <div className="w-full max-w-3xl space-y-8" style={{ width: '50%', minWidth: '500px' }}>
+    <BalanceView />
+    <ExpenseList />
+  </div>
+</div>
 
-            <div style={{ width: '50%', minWidth: '500px' }}>
-              <BalanceView />
-              <ExpenseList />
-            </div>
           </div>
         </main>
       </div>

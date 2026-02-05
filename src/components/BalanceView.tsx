@@ -9,13 +9,9 @@ function BalanceView() {
 
   /* ---------------- BALANCE CALCULATION ---------------- */
   const balances: Record<string, number> = {};
-
-  people.forEach((p) => {
-    balances[p] = 0;
-  });
+  people.forEach((p) => (balances[p] = 0));
 
   expenses.forEach((expense) => {
-    // credit payer
     balances[expense.paidBy] += expense.amount;
 
     if (expense.splitType === 'equal') {
@@ -40,23 +36,21 @@ function BalanceView() {
   );
 
   return (
-    <div className="bg-white rounded-xl p-6 mb-6 shadow-lg">
-      <h2 className="text-gray-700 mb-4 text-2xl border-b-2 border-gray-200 pb-2">
-        💰 Balances
-      </h2>
+    <div className="bg-white rounded-xl p-6 shadow-lg">
+      <h2 className="text-xl font-semibold mb-4">💰 Balances</h2>
 
       {/* Total Spending */}
-      <div className="flex justify-between items-center p-4 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-lg mb-6">
-        <span>Total Group Spending:</span>
-        <strong className="text-2xl">
-          ${totalSpending.toFixed(2)}
-        </strong>
+      <div className="bg-indigo-500 text-white rounded-lg px-4 py-3 mb-6 flex justify-between">
+        <span>Total Group Spending</span>
+        <strong>${totalSpending.toFixed(2)}</strong>
       </div>
 
       {/* Individual Balances */}
-      <div className="mb-6">
-        <h3 className="text-gray-600 my-2 text-lg">Individual Balances</h3>
+      <h3 className="text-gray-700 font-medium mb-3">
+        Individual Balances
+      </h3>
 
+      <div className="space-y-2 mb-6">
         {people.map((person) => {
           const balance = balances[person];
           const isOwed = balance > 0.01;
@@ -65,36 +59,34 @@ function BalanceView() {
           return (
             <div
               key={person}
-              className="flex justify-between items-center px-3 py-3 mb-2 rounded-md bg-gray-100 border"
+              className={`flex justify-between items-center px-4 py-3 rounded-lg border
+                ${
+                  isOwed
+                    ? 'bg-green-50 border-green-200'
+                    : isOwing
+                    ? 'bg-red-50 border-red-200'
+                    : 'bg-gray-50 border-gray-200'
+                }`}
             >
-              <span className="font-medium">{person}</span>
-
-              <span className="flex gap-2">
-                {isOwed && (
-                  <>
-                    <span className="text-green-700">gets back</span>
-                    <strong className="text-green-700">
-                      ${balance.toFixed(2)}
-                    </strong>
-                  </>
-                )}
-
-                {isOwing && (
-                  <>
-                    <span className="text-red-700">owes</span>
-                    <strong className="text-red-700">
-                      ${Math.abs(balance).toFixed(2)}
-                    </strong>
-                  </>
-                )}
-
-                {!isOwed && !isOwing && (
-                  <>
-                    <span className="text-gray-600">settled up</span>
-                    <strong>$0.00</strong>
-                  </>
-                )}
+              <span className="font-medium text-gray-800">
+                {person}
               </span>
+
+              {isOwed && (
+                <span className="text-green-700 font-semibold">
+                  +${balance.toFixed(2)}
+                </span>
+              )}
+
+              {isOwing && (
+                <span className="text-red-700 font-semibold">
+                  -${Math.abs(balance).toFixed(2)}
+                </span>
+              )}
+
+              {!isOwed && !isOwing && (
+                <span className="text-gray-600">$0.00</span>
+              )}
             </div>
           );
         })}
@@ -102,30 +94,37 @@ function BalanceView() {
 
       {/* Suggested Settlements */}
       {settlements.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-gray-600 text-lg mb-2">
+        <>
+          <h3 className="text-gray-700 font-medium mb-1">
             🔄 Suggested Settlements
           </h3>
+          <p className="text-sm text-gray-500 mb-3">
+            Minimum transactions to settle all debts
+          </p>
 
-          <div className="bg-yellow-50 border rounded-lg p-4">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg">
             {settlements.map((s, idx) => (
               <div
                 key={idx}
-                className="flex justify-between py-2 border-b last:border-b-0"
+                className="flex justify-between items-center px-4 py-3 border-b last:border-b-0"
               >
-                <span>
-                  <strong>{s.from}</strong> pays <strong>{s.to}</strong>
+                <span className="text-gray-800">
+                  <strong className="text-red-600">{s.from}</strong>
+                  <span className="mx-2 text-gray-500">→</span>
+                  <strong className="text-green-600">{s.to}</strong>
                 </span>
-                <strong>${s.amount.toFixed(2)}</strong>
+                <span className="font-semibold">
+                  ${s.amount.toFixed(2)}
+                </span>
               </div>
             ))}
           </div>
-        </div>
+        </>
       )}
 
       {/* All settled */}
       {allSettled && (
-        <div className="mt-6 text-center py-6 bg-green-100 rounded-lg text-green-900 font-medium">
+        <div className="mt-6 text-center py-4 bg-green-100 rounded-lg text-green-900 font-medium">
           ✅ All balances are settled!
         </div>
       )}
