@@ -1,130 +1,187 @@
-import { initialPeople } from '../initialData';
+import { useState } from 'react';
+import { useExpense } from '../context/ExpenseContext';
 
 function ExpenseForm() {
-  const people = initialPeople;
+  const { people, addExpense } = useExpense();
+
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [paidBy, setPaidBy] = useState('');
+  const [splitType, setSplitType] = useState<'equal' | 'custom'>('equal');
+  const [splitBetween, setSplitBetween] = useState<string[]>([]);
+  const [customAmounts, setCustomAmounts] = useState<Record<string, number>>(
+    {}
+  );
+
+  /* ---------------- HANDLERS ---------------- */
+
+  const togglePerson = (person: string) => {
+    setSplitBetween((prev) =>
+      prev.includes(person)
+        ? prev.filter((p) => p !== person)
+        : [...prev, person]
+    );
+  };
+
+  const handleCustomAmount = (person: string, value: string) => {
+    setCustomAmounts((prev) => ({
+      ...prev,
+      [person]: Number(value),
+    }));
+  };
+
+  const resetForm = () => {
+    setDescription('');
+    setAmount('');
+    setDate('');
+    setPaidBy('');
+    setSplitType('equal');
+    setSplitBetween([]);
+    setCustomAmounts({});
+  };
+
+  /* ---------------- SUBMIT ---------------- */
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !description ||
+      !amount ||
+      !date ||
+      !paidBy ||
+      splitBetween.length === 0
+    ) {
+      alert('Please fill all required fields');
+      return;
+    }
+
+    if (splitType === 'custom') {
+      const totalCustom = Object.values(customAmounts).reduce(
+        (sum, val) => sum + val,
+        0
+      );
+
+      if (Math.abs(totalCustom - Number(amount)) > 0.01) {
+        alert('Custom amounts must add up to total expense');
+        return;
+      }
+    }
+
+    addExpense({
+      id: crypto.randomUUID(),
+      description,
+      amount: Number(amount),
+      paidBy,
+      date,
+      splitType,
+      splitBetween,
+      customAmounts: splitType === 'custom' ? customAmounts : undefined,
+    });
+
+    resetForm();
+  };
+
+  /* ---------------- UI ---------------- */
 
   return (
-    <div className="bg-white rounded-xl p-6 mb-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
-      <h2 className="text-gray-700 mb-4 text-2xl border-b-2 border-gray-200 pb-2">
-        💸 Add Expense
-      </h2>
+    <div className="bg-white rounded-xl p-6 mb-6 shadow-lg">
+      <h2 className="text-2xl mb-4">💸 Add Expense</h2>
 
-      <form>
-        <div className="mb-4">
-          <label
-            htmlFor="description"
-            className="block mb-1 text-gray-700 font-medium text-sm"
-          >
-            Description
-          </label>
+      <form onSubmit={handleSubmit}>
+        {/* Description */}
+        <input
+          className="w-full mb-3 p-2 border rounded"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
+        {/* Amount + Date */}
+        <div className="flex gap-3 mb-3">
           <input
-            id="description"
-            type="text"
-            placeholder="What was the expense for?"
-            className="w-full px-3 py-2 border-2 border-gray-200 rounded-md text-base transition-colors focus:outline-none focus:border-indigo-500"
+            type="number"
+            className="flex-1 p-2 border rounded"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <input
+            type="date"
+            className="flex-1 p-2 border rounded"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
 
-        <div className="flex gap-4">
-          <div className="flex-1 mb-4">
-            <label
-              htmlFor="amount"
-              className="block mb-1 text-gray-700 font-medium text-sm"
-            >
-              Amount ($)
-            </label>
+        {/* Paid By */}
+        <select
+          className="w-full p-2 border rounded mb-3"
+          value={paidBy}
+          onChange={(e) => setPaidBy(e.target.value)}
+        >
+          <option value="">Paid by...</option>
+          {people.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+        </select>
+
+        {/* Split Type */}
+        <div className="mb-3">
+          <label className="mr-4">
             <input
-              id="amount"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              className="w-full px-3 py-2 border-2 border-gray-200 rounded-md text-base transition-colors focus:outline-none focus:border-indigo-500"
-            />
-          </div>
+              type="radio"
+              checked={splitType === 'equal'}
+              onChange={() => setSplitType('equal')}
+            />{' '}
+            Equal
+          </label>
 
-          <div className="flex-1 mb-4">
-            <label
-              htmlFor="date"
-              className="block mb-1 text-gray-700 font-medium text-sm"
-            >
-              Date
-            </label>
+          <label>
             <input
-              id="date"
-              type="date"
-              className="w-full px-3 py-2 border-2 border-gray-200 rounded-md text-base transition-colors focus:outline-none focus:border-indigo-500"
-            />
-          </div>
+              type="radio"
+              checked={splitType === 'custom'}
+              onChange={() => setSplitType('custom')}
+            />{' '}
+            Custom
+          </label>
         </div>
 
+        {/* Split Between */}
         <div className="mb-4">
-          <label
-            htmlFor="paidBy"
-            className="block mb-1 text-gray-700 font-medium text-sm"
-          >
-            Paid By
-          </label>
-          <select
-            id="paidBy"
-            className="w-full px-3 py-2 border-2 border-gray-200 rounded-md text-base transition-colors focus:outline-none focus:border-indigo-500 cursor-pointer"
-          >
-            <option value="">Select person...</option>
-            {people.map((person) => (
-              <option key={person} value={person}>
-                {person}
-              </option>
-            ))}
-          </select>
-        </div>
+          <p className="font-medium mb-2">Split Between</p>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700 font-medium text-sm">
-            Split Type
-          </label>
-          <div className="flex flex-col gap-2">
-            <label className="flex items-center gap-2 cursor-pointer px-1 py-1 rounded transition-colors hover:bg-gray-50">
+          {people.map((p) => (
+            <div key={p} className="flex items-center gap-2 mb-1">
               <input
-                type="radio"
-                value="equal"
-                name="splitType"
-                className="cursor-pointer"
+                type="checkbox"
+                checked={splitBetween.includes(p)}
+                onChange={() => togglePerson(p)}
               />
-              <span>Equal Split</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer px-1 py-1 rounded transition-colors hover:bg-gray-50">
-              <input
-                type="radio"
-                value="custom"
-                name="splitType"
-                className="cursor-pointer"
-              />
-              <span>Custom Amounts</span>
-            </label>
-          </div>
-        </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-700 font-medium text-sm">
-            Split Between
-          </label>
-          <div className="flex flex-col gap-2">
-            {people.map((person) => (
-              <div
-                key={person}
-                className="flex items-center justify-between p-2 bg-gray-50 rounded mb-1"
-              >
-                <label className="flex items-center gap-2 cursor-pointer px-1 py-1 rounded transition-colors hover:bg-gray-50">
-                  <input type="checkbox" className="cursor-pointer" />
-                  <span>{person}</span>
-                </label>
-              </div>
-            ))}
-          </div>
+              <span>{p}</span>
+
+              {splitType === 'custom' && splitBetween.includes(p) && (
+                <input
+                  type="number"
+                  className="ml-auto w-24 p-1 border rounded"
+                  placeholder="$"
+                  value={customAmounts[p] ?? ''}
+                  onChange={(e) =>
+                    handleCustomAmount(p, e.target.value)
+                  }
+                />
+              )}
+            </div>
+          ))}
         </div>
 
         <button
           type="submit"
-          className="w-full px-4 py-2 bg-indigo-500 text-white rounded-md text-sm font-medium cursor-pointer transition-all hover:bg-indigo-600 hover:-translate-y-px flex items-center justify-center gap-1"
+          className="w-full bg-indigo-500 text-white p-2 rounded"
         >
           Add Expense
         </button>

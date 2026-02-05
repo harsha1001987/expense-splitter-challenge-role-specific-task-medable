@@ -4,7 +4,7 @@ export const initialPeople: string[] = ["Alice", "Bob", "Charlie", "Diana"];
 
 export const initialExpenses: Expense[] = [
   {
-    id: 1,
+    id: '1',
     description: "Lunch at restaurant",
     amount: 120,
     paidBy: "Alice",
@@ -13,7 +13,7 @@ export const initialExpenses: Expense[] = [
     splitType: "equal"
   },
   {
-    id: 2,
+    id: '2',
     description: "Uber to airport",
     amount: 45,
     paidBy: "Bob",
@@ -22,7 +22,7 @@ export const initialExpenses: Expense[] = [
     splitType: "equal"
   },
   {
-    id: 3,
+    id: '3',
     description: "Concert tickets",
     amount: 200,
     paidBy: "Charlie",

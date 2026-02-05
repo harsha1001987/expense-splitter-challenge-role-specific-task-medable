@@ -1,5 +1,5 @@
 export interface Expense {
-  id: number;
+  id: string;
   description: string;
   amount: number;
   paidBy: string;
@@ -7,6 +7,8 @@ export interface Expense {
   date: string;
   splitType: 'equal' | 'custom';
   customAmounts?: { [person: string]: number };
+
+   
 }
 
 export interface Balance {

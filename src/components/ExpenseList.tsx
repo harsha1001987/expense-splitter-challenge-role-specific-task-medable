@@ -1,7 +1,7 @@
-import { initialExpenses } from '../initialData';
+import { useExpense } from '../context/ExpenseContext';
 
 function ExpenseList() {
-  const expenses = initialExpenses;
+  const { expenses, deleteExpense } = useExpense();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -39,17 +39,19 @@ function ExpenseList() {
                     <span>Paid by {expense.paidBy}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xl font-semibold text-gray-700">
-                    ${expense.amount.toFixed(2)}
-                  </span>
-                  <button
-                    className="bg-transparent text-gray-600 px-2 py-1 transition-colors hover:bg-gray-50"
-                    aria-label="Expand"
-                  >
-                    ▶
-                  </button>
-                </div>
+               <div className="flex items-center gap-4">
+  <span className="text-xl font-semibold text-gray-700">
+    ${expense.amount.toFixed(2)}
+  </span>
+
+  <button
+    onClick={() => deleteExpense(expense.id)}
+    className="text-red-500 text-sm px-2 py-1 rounded hover:bg-red-50"
+  >
+    Delete
+  </button>
+</div>
+
               </div>
             </div>
           ))}
