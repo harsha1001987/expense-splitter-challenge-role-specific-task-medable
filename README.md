@@ -219,3 +219,31 @@ src/
 6. Note any incomplete features or known issues
 
 Good luck! 🍀
+
+
+## Below are my approaches and observations
+
+## Approach & Design
+
+I used React with TypeScript and managed shared data using the Context API since the app is small and doesn’t need heavy state tools like Redux. All expenses and people data live in a single context, while balance calculation and debt simplification are handled in separate utility functions to keep components clean and readable. Tailwind CSS was used for quick, consistent styling.
+
+## Assumptions
+
+All expenses are in one currency.
+
+Users enter valid data (custom splits add up to the total).
+
+Small rounding differences are ignored.
+
+Expenses don’t need to be edited once added.
+
+
+## Incomplete / Known Limitations
+
+Data is not persisted (refresh clears everything).
+
+No edit expense feature (only add/delete).
+
+No mobile-specific UI optimizations.
+
+No automated tests included.
