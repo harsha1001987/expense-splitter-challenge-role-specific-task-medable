@@ -14,7 +14,7 @@ function ExpenseForm() {
     {}
   );
 
-  /* ---------------- HANDLERS ---------------- */
+  
 
   const togglePerson = (person: string) => {
     setSplitBetween((prev) =>
@@ -41,7 +41,7 @@ function ExpenseForm() {
     setCustomAmounts({});
   };
 
-  /* ---------------- SUBMIT ---------------- */
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,14 +83,14 @@ function ExpenseForm() {
     resetForm();
   };
 
-  /* ---------------- UI ---------------- */
+ 
 
   return (
     <div className="bg-white rounded-xl p-6 mb-6 shadow-lg">
       <h2 className="text-2xl mb-4">💸 Add Expense</h2>
 
       <form onSubmit={handleSubmit}>
-        {/* Description */}
+       
         <input
           className="w-full mb-3 p-2 border rounded"
           placeholder="Description"
@@ -98,7 +98,7 @@ function ExpenseForm() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        {/* Amount + Date */}
+      
         <div className="flex gap-3 mb-3">
           <input
             type="number"
@@ -115,7 +115,7 @@ function ExpenseForm() {
           />
         </div>
 
-        {/* Paid By */}
+       
         <select
           className="w-full p-2 border rounded mb-3"
           value={paidBy}
@@ -129,7 +129,7 @@ function ExpenseForm() {
           ))}
         </select>
 
-        {/* Split Type */}
+        
         <div className="mb-3">
           <label className="mr-4">
             <input
@@ -150,7 +150,7 @@ function ExpenseForm() {
           </label>
         </div>
 
-        {/* Split Between */}
+       
         <div className="mb-4">
           <p className="font-medium mb-2">Split Between</p>
 

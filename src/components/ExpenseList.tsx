@@ -38,7 +38,7 @@ function ExpenseList() {
                 key={expense.id}
                 className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
               >
-                {/* HEADER */}
+               
                 <div
                   className="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-100"
                   onClick={() => toggleExpand(expense.id)}
@@ -63,14 +63,14 @@ function ExpenseList() {
                   </div>
                 </div>
 
-                {/* DROPDOWN */}
+               
                 {isOpen && (
                   <div className="border-t bg-white px-4 py-3">
                     <p className="text-sm text-gray-600 mb-2">
                       Split Details ({expense.splitType})
                     </p>
 
-                    {/* Equal split */}
+                   
                     {expense.splitType === 'equal' &&
                       expense.splitBetween.map((person) => (
                         <div
@@ -88,7 +88,7 @@ function ExpenseList() {
                         </div>
                       ))}
 
-                    {/* Custom split */}
+                   
                     {expense.splitType === 'custom' &&
                       expense.customAmounts &&
                       Object.entries(expense.customAmounts).map(
@@ -105,7 +105,7 @@ function ExpenseList() {
                         )
                       )}
 
-                    {/* DELETE BUTTON */}
+                  
                     <button
                       onClick={() => deleteExpense(expense.id)}
                       className="mt-3 bg-red-500 text-white text-sm px-3 py-1 rounded hover:bg-red-600"

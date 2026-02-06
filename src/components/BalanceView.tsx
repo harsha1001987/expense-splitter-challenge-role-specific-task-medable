@@ -4,10 +4,10 @@ import { simplifyDebts } from '../utils/simplifyDebts';
 function BalanceView() {
   const { people, expenses } = useExpense();
 
-  /* ---------------- TOTAL SPENDING ---------------- */
+  
   const totalSpending = expenses.reduce((sum, e) => sum + e.amount, 0);
 
-  /* ---------------- BALANCE CALCULATION ---------------- */
+ 
   const balances: Record<string, number> = {};
   people.forEach((p) => (balances[p] = 0));
 
@@ -28,7 +28,7 @@ function BalanceView() {
     }
   });
 
-  /* ---------------- DEBT SIMPLIFICATION ---------------- */
+ 
   const settlements = simplifyDebts(balances);
 
   const allSettled = people.every(
@@ -39,13 +39,13 @@ function BalanceView() {
     <div className="bg-white rounded-xl p-6 shadow-lg">
       <h2 className="text-xl font-semibold mb-4">💰 Balances</h2>
 
-      {/* Total Spending */}
+      
       <div className="bg-indigo-500 text-white rounded-lg px-4 py-3 mb-6 flex justify-between">
         <span>Total Group Spending</span>
         <strong>${totalSpending.toFixed(2)}</strong>
       </div>
 
-      {/* Individual Balances */}
+    
       <h3 className="text-gray-700 font-medium mb-3">
         Individual Balances
       </h3>
@@ -92,7 +92,6 @@ function BalanceView() {
         })}
       </div>
 
-      {/* Suggested Settlements */}
       {settlements.length > 0 && (
         <>
           <h3 className="text-gray-700 font-medium mb-1">
@@ -122,7 +121,7 @@ function BalanceView() {
         </>
       )}
 
-      {/* All settled */}
+      
       {allSettled && (
         <div className="mt-6 text-center py-4 bg-green-100 rounded-lg text-green-900 font-medium">
           ✅ All balances are settled!
